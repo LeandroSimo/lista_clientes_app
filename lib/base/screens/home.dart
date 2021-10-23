@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -9,6 +11,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 class _HomePageState extends State<HomePage> {
+  get nullableList => null;
+
 
 List<Cliente> parseCliente(String responseBody) {
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
@@ -40,20 +44,49 @@ Widget listaClientes() {
                       );
                     case ConnectionState.active:
                     case ConnectionState.done:
-                      if (snapshot.hasError) {
-                        return Center(child: Text('${snapshot.connectionState}'),);
-                      } else {
+                      if (snapshot.hasData) {
+                        var count = snapshot.data?.length;
                         return ListView.builder(
-                            itemCount: snapshot.data?.length,
+                            itemCount:count,
                             itemBuilder: (context, index) {
                               List<Cliente>? lista = snapshot.data;
-                              Cliente post = lista![index];
-
+                              Cliente client = lista![index];                      
                               return ListTile(
-                                title: Text(post.nome),
-                                subtitle: Text(post.telefone.toString()),
+                                leading: Icon(Icons.account_circle_rounded),
+                                trailing: Icon(Icons.add),
+                                title: Text(client.nome),
+                                subtitle: Text(client.telefone.toString()),
+                                onTap: (){
+                                  showDialog(
+                                    context: context, 
+                                    builder: (context) => AlertDialog(
+                                      content: Text(
+                                        '${client.nome}\n ${client.cpf}\n ${client.telefone}\n ${client.email}\n ${client.cep}\n ${client.endereco}\n ${client.bairro}\n ${client.cidade}\n ${client.estado}\n ${client.complemento}'
+                                      ),
+                                    )
+                                  );
+                                }
                               );
                             });
+                      } else {
+                          return Center(child: Text('${snapshot.connectionState}'),);
+                        //  var count = snapshot.data?.length;
+                        // return ListView.builder(
+                        //     itemCount:count,
+                        //     itemBuilder: (context, index) {
+                        //       var client = [];
+                        //       List<Cliente>? lista = snapshot.data;
+                        //       Cliente post = client[index];
+                        //       for (var p in lista!) {
+                        //         if(snapshot.data != null && client.length > 0){
+                        //           client.add(p);
+                        //         } return client[index];
+                        //       }                        
+                        //       return ListTile(
+                        //         title: Text(post.nome),
+                        //         subtitle: Text(post.telefone.toString()),
+                        //       );
+                        //     });
                       }
                       //break;
                   }

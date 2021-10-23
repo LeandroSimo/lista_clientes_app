@@ -283,13 +283,12 @@ _infoSave(){
     )
   );
 }
-
-  _salvar() async {
+_salvar() async {
     if(_formKey.currentState!.validate()){
       _infoSave();
     }
     _post();  
-  }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(

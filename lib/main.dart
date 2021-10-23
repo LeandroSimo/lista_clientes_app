@@ -1,3 +1,4 @@
+//@dart=2.9
 import 'package:flutter/material.dart';
 import 'package:lista_clientes/base/screens/home.dart';
 import 'package:lista_clientes/base/screens/telaCadastro.dart';
